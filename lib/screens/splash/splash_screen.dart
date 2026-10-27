@@ -79,13 +79,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     color: AppColors.textSub, // Warna abu-abu dari tema
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          // Loading Indicator di bagian bawah
-          Positioned(
-            bottom: 50,
+                Positioned(
+            bottom: 0,
             left: 0,
             right: 0,
             child: Center(
@@ -93,12 +88,20 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
+                  strokeWidth: 10,
                   valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent), // Sky Blue
                 ),
               ),
             ),
           ),
+              ],
+              
+            ),
+            
+          ),
+
+          // Loading Indicator di bagian bawah
+          
         ],
       ),
     );

@@ -178,8 +178,8 @@ class _ProfilePageState extends State<ProfilePage> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(AppSizes.pagePadding),
           child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 700),
+            child: Expanded(
+              // constraints: const BoxConstraints(maxWidth: 1920),
               child: Column(
                 children: [
                   // CARD UTAMA PROFIL

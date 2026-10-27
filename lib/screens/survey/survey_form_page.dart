@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../models/survey.dart';
@@ -189,13 +190,54 @@ class _SurveyFormPageState extends State<SurveyFormPage> {
                             validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
                           ),
                           const SizedBox(height: 16),
-                          DropdownButtonFormField<String>(
-                            // ✅ PERBAIKAN: value diganti initialValue agar tidak deprecated
-                            initialValue: _selectedCategoryId,
-                            items: _categories.map((c) => DropdownMenuItem(value: c['id'].toString(), child: Text(c['name']))).toList(),
-                            onChanged: (v) => setState(() => _selectedCategoryId = v),
-                            decoration: const InputDecoration(labelText: 'Kategori', border: OutlineInputBorder()),
+                          DropdownSearch<String>(
+                            selectedItem: _categories
+                                .where((c) => c['id'].toString() == _selectedCategoryId)
+                                .map((c) => c['name'].toString())
+                                .isEmpty
+                                ? null
+                                : _categories
+                                    .firstWhere(
+                                      (c) => c['id'].toString() == _selectedCategoryId,
+                                    )['name']
+                                    .toString(),
+                            items: (filter, infiniteScrollProps) {
+                              return _categories
+                                  .where((c) => c['name']
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(filter.toLowerCase()))
+                                  .take(10)
+                                  .map((c) => c['name'].toString())
+                                  .toList();
+                            },
+                            onSelected: (v) {
+                              setState(() {
+                                _selectedCategoryId = v == null
+                                    ? null
+                                    : _categories
+                                        .firstWhere((c) => c['name'].toString() == v)['id']
+                                        .toString();
+                              });
+                            },
+                            decoratorProps: const DropDownDecoratorProps(
+                              decoration: InputDecoration(
+                                labelText: 'Kategori',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            popupProps: const PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: 'Cari kategori...',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
                           ),
+
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: _descCtrl,

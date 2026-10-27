@@ -244,8 +244,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.all(AppSizes.pagePadding),
           child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
+            child: Expanded(
               child: Form(
                 key: _formKey,
                 child: Column(

@@ -59,7 +59,7 @@ class _AppHeaderState extends State<AppHeader> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.surface,
+      backgroundColor: const Color.fromARGB(255, 179, 69, 69),
       elevation: 0,
       shape: const Border(
         bottom: BorderSide(color: AppColors.border, width: 1),
@@ -71,66 +71,66 @@ class _AppHeaderState extends State<AppHeader> {
         style: GoogleFonts.inter(
           fontWeight: FontWeight.w700,
           fontSize: 18,
-          color: AppColors.text,
+          color: const Color.fromARGB(255, 241, 241, 243),
         ),
       ),
       // KANAN: Nama User & Foto Profil dari API
-      actions: [
-        Row(
-          children: [
-            if (_isLoading)
-              const SizedBox(
-                width: 16, 
-                height: 16, 
-                child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary)
-              )
-            else
-              Text(
-                _userName,
-                style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  color: AppColors.textSub,
-                ),
-              ),
-            const SizedBox(width: 10),
+      // actions: [
+      //   Row(
+      //     children: [
+      //       if (_isLoading)
+      //         const SizedBox(
+      //           width: 16, 
+      //           height: 16, 
+      //           child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary)
+      //         )
+      //       else
+      //         Text(
+      //           _userName,
+      //           style: GoogleFonts.inter(
+      //             fontWeight: FontWeight.w600,
+      //             fontSize: 14,
+      //             color: AppColors.textSub,
+      //           ),
+      //         ),
+      //       const SizedBox(width: 10),
             
-            // Avatar
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: AppColors.bg,
-              child: ClipOval(
-                child: _imageFuture != null
-                    ? FutureBuilder<Uint8List?>(
-                        future: _imageFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                              child: SizedBox(
-                                width: 16, 
-                                height: 16, 
-                                child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary)
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData && snapshot.data != null) {
-                            return Image.memory(
-                              snapshot.data!, 
-                              width: 36, 
-                              height: 36, 
-                              fit: BoxFit.cover
-                            );
-                          }
-                          return const Icon(Icons.person, color: AppColors.textMuted, size: 20);
-                        },
-                      )
-                    : const Icon(Icons.person, color: AppColors.textMuted, size: 20),
-              ),
-            ),
-            const SizedBox(width: 20),
-          ],
-        ),
-      ],
+      //       // Avatar
+      //       CircleAvatar(
+      //         radius: 18,
+      //         backgroundColor: AppColors.bg,
+      //         child: ClipOval(
+      //           child: _imageFuture != null
+      //               ? FutureBuilder<Uint8List?>(
+      //                   future: _imageFuture,
+      //                   builder: (context, snapshot) {
+      //                     if (snapshot.connectionState == ConnectionState.waiting) {
+      //                       return const Center(
+      //                         child: SizedBox(
+      //                           width: 16, 
+      //                           height: 16, 
+      //                           child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary)
+      //                         ),
+      //                       );
+      //                     }
+      //                     if (snapshot.hasData && snapshot.data != null) {
+      //                       return Image.memory(
+      //                         snapshot.data!, 
+      //                         width: 36, 
+      //                         height: 36, 
+      //                         fit: BoxFit.cover
+      //                       );
+      //                     }
+      //                     return const Icon(Icons.person, color: AppColors.textMuted, size: 20);
+      //                   },
+      //                 )
+      //               : const Icon(Icons.person, color: AppColors.textMuted, size: 20),
+      //         ),
+      //       ),
+      //       const SizedBox(width: 20),
+      //     ],
+      //   ),
+      // ],
     );
   }
 }

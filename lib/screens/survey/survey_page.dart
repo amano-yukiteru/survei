@@ -182,7 +182,7 @@ class _SurveyPageState extends State<SurveyPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 80), 
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: isWide ? 2 : 1,
+            crossAxisCount: isWide ? 1 : 1,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
             mainAxisExtent: 145, // Tinggi tetap untuk setiap Card

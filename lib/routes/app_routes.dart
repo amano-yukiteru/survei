@@ -1,10 +1,10 @@
 class AppRoutes {
-  static String splash = "/";
-  static String login = "/login";
-  static String register = "/register";
-  static String dashboard = "/dashboard";
-  static String editProfile = "/edit-profile";
-  static String addSurvey = "/add-survey";
-  static String editSurvey = "/edit-survey";
-  static String surveyDetail = "/survey-detail";
+  static const String splash = "/";
+  static const String login = "/login";
+  static const String register = "/register";
+  static const String dashboard = "/dashboard";
+  static const String editProfile = "/edit-profile";
+  static const String addSurvey = "/add-survey";
+  static const String editSurvey = "/edit-survey";
+  static const String surveyDetail = "/survey-detail";
 }

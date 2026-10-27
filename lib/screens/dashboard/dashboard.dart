@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants/app_colors.dart';
-import 'home_page.dart';                    // Import Home (se-folder)
-import '../profile/profile_page.dart';      // Import Profile (folder sebelah)
-import '../survey/survey_page.dart';        // Import Survey (folder sebelah)
+import 'home_page.dart';
+import '../profile/profile_page.dart';
+import '../survey/survey_page.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -16,11 +16,11 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
-  // Daftar halaman yang akan ditampilkan
-  final List<Widget> _pages = const [
-    HomePage(),
-    SurveyPage(),   // <-- Sekarang harusnya sudah tidak error
-    ProfilePage(),
+  // Daftar halaman (TANPA IndexedStack)
+  final List<Widget> _pages = [
+    const HomePage(),
+    const SurveyPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -28,13 +28,9 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       backgroundColor: AppColors.bg,
       
-      // Menggunakan IndexedStack agar state & data tidak hilang saat pindah tab
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
+      // ✅ INI KUNCINYA: Setiap pindah tab, halaman langsung dibuat ulang!
+      body: _pages[_selectedIndex], 
       
-      // NAVIGASI BAWAAN FLUTTER
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -46,30 +42,12 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: AppColors.surface,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textMuted,
-        selectedLabelStyle: GoogleFonts.inter(
-          fontWeight: FontWeight.w600, 
-          fontSize: 12,
-        ),
-        unselectedLabelStyle: GoogleFonts.inter(
-          fontWeight: FontWeight.w500, 
-          fontSize: 12,
-        ),
+        selectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 12),
+        unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 12),
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_outlined),
-            activeIcon: Icon(Icons.assignment_rounded),
-            label: 'Survey',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            activeIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home_rounded), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.assignment_outlined), activeIcon: Icon(Icons.assignment_rounded), label: 'Survey'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline_rounded), activeIcon: Icon(Icons.person_rounded), label: 'Profile'),
         ],
       ),
     );

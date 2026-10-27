@@ -7,7 +7,7 @@ import '../../models/survey.dart';
 import '../../routes/app_routes.dart';
 import '../../services/survey_service.dart';
 import '../../utils/snackbar_helper.dart';
-import '../../widgets/app_header.dart'; // <-- Cukup panggil ini
+import '../../widgets/app_header.dart';
 import '../../widgets/home/stat_card.dart';
 import '../../widgets/home/home_survey_item.dart';
 
@@ -15,10 +15,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   bool _isLoading = true;
   List<Survey> _surveys = [];
   int _totalCategory = 0;
@@ -29,14 +29,20 @@ class _HomePageState extends State<HomePage> {
     _fetchData();
   }
 
-  // HANYA mengambil data SURVEY (Profil sudah diurus AppHeader)
+  Future<void> _openDetail(int id) async {
+    final result = await context.push(AppRoutes.surveyDetail, extra: id);
+    if (result == true && mounted) {
+      _fetchData();
+    }
+  }
+
   Future<void> _fetchData() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
 
     try {
       final surveyData = await SurveyService.getSurveys();
 
-      // Hitung total kategori unik
       Set<String> categories = {};
       for (var item in surveyData) {
         categories.add(item.categoryName);
@@ -64,24 +70,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      
-      // MENGGUNAKAN WIDGET APP HEADER
-      // Nama dan Foto akan otomatis muncul dari API!
-      appBar: const AppHeader(
-        pageTitle: 'Beranda',
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.addSurvey),
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-
+      appBar: AppHeader(pageTitle: 'Beranda'),
       body: RefreshIndicator(
         onRefresh: _fetchData,
         color: AppColors.primary,
         child: _isLoading
-            ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+            ? const Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              )
             : SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(20),
@@ -112,7 +108,11 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 28),
                     Text(
                       'Survey Terbaru',
-                      style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.text),
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.text,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     _surveys.isEmpty
@@ -121,12 +121,15 @@ class _HomePageState extends State<HomePage> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: _surveys.length,
-                            separatorBuilder: (_, _) => const SizedBox(height: 12),
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(height: 12),
                             itemBuilder: (context, index) {
                               final survey = _surveys[index];
                               return HomeSurveyItem(
                                 survey: survey,
-                                onTap: () => context.push(AppRoutes.surveyDetail, extra: survey.id),
+                                onTap: () => _openDetail(
+                                  survey.id,
+                                ), // Panggil fungsi _openDetail
                               );
                             },
                           ),
@@ -149,9 +152,16 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Column(
         children: [
-          Icon(Icons.folder_open_rounded, size: 48, color: AppColors.textMuted.withValues(alpha: 0.5)),
+          Icon(
+            Icons.folder_open_rounded,
+            size: 48,
+            color: AppColors.textMuted.withValues(alpha: 0.5),
+          ),
           const SizedBox(height: 12),
-          Text('Belum ada data survey.', style: GoogleFonts.inter(color: AppColors.textSub, fontSize: 13)),
+          Text(
+            'Belum ada data survey.',
+            style: GoogleFonts.inter(color: AppColors.textSub, fontSize: 13),
+          ),
         ],
       ),
     );
